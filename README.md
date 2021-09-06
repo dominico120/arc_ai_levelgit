@@ -1,1 +1,141 @@
 # arc_ai_level
+FORMAT: 1A
+HOST: /v1/private/quicksight
+
+# AIlevel API
+
+## Edit / Userdata
+
+### AIlevel更新  [POST /quicksight-execution]
+
+
++ Request (application/json)
+
+
+    + Attributes
+      + organizations (array[object], fixed-type, required)
+            + (object)
+                + id: `d7c6fdc2-c34f-11eb-a9d7-2b3cd3a6d52e` (string, required) - 組織ID
+                + name: `長谷工健保` (string, required) - 組織名
+      + users (array[object], fixed-type, required)
+            + (object)
+                + email: `taro.yamada@example.com` (string, required) - メールアドレス
+                + organizationIds (array[string], fixed-type, required)
+                    + `d7c6fdc2-c34f-11eb-a9d7-2b3cd3a6d5` - 組織ID
+
+
++ Response 200 (application/json)
+           
+    + Body
+
+            "ok!"
+
+
++ Response 400 (application/json)
+
+    + Body
+
+            "Bad Requset"
+
+
+# Group Embed URL
+            
+## Console Embed URL
+
+### コンソールEmbed URL発行 [POST /embed-urls]
+QuickSightコンソール(ダッシュボード)のEmbed URLを発行します。ユーザはメールアドレスで識別します。
+
+
++ Request (application/json)
+
+    + Attributes
+      + email: saburo.sato@example.com (string, required) - Eメールアドレス
+
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"embedURL": "https://"}
+
+
++ Response 400 (application/json)
+
+    + Body
+
+            "Bad Requset"
+
+
+
+### AIlevel計算 [POST /update-AIlevel]
+AIlevelを計算します。parmetersAttributeの変数が欠損している場合はnullを入れてください。
+
+
++ Request (application/json)
+
+    + Attributes
+      + userId: 1234 (number, required) - ユーザID
+      + parameters (object, fixed-type, required)
+            + weight: 70.0 (number, required) - 体重
+            + height: 170.0 (number, required) - 身長
+            + muscleMass: 13.0 (number, required) - 筋肉量
+            + flexibility: 0 (number, required) - 柔軟性
+            + bodyFatPercentage: 10.0 (number, required) - 体脂肪率
+            + armMovement: 0 (number, required) - 腕回し
+            + hipMovement: 0 (number, required) - 腰回し
+            + ankleMovement: 0 (number, required) - 足首回し
+            + postureSide: 0 (number, required) - 姿勢側面
+            + postureFront: 21012010 (string, required) - 姿勢正面 8桁の文字列
+
++ Response 204
+
++ Response 400 (application/json)
+
+    + Body
+
+            "Bad Requset"
+
+
+## Return AIlevel [/return-AIlevel/{userId}]
+
+### AIlevel取得 [GET]
+ユーザのAIlevelを返します。
+
+
++ Parameters
+
+    + userId: 1234 (number, required) - ユーザID
+
+
++ Response 200 (application/json)
+
+     + Body
+
+            {"kagayakiScore": 5678}
+
+
++ Response 400 (application/json)
+
+    + Body
+
+            "Bad Requset"
+
+      
+# Group Dashboard User Data
+
+## Return User Data [/user-data/{userId}]
+
+### ユーザデータ取得 [GET]
+
++ Parameters
+
+    + userId: 1234 (number, required) - ユーザID
+
+
++ Response 200 (application/json)
+
+        [
+          {
+            "userId": 1234,
+            "date": 202109901, 
+            "key": 2.46,
